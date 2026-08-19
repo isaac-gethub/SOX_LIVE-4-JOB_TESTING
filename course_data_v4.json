@@ -1,0 +1,816 @@
+[
+  {
+    "book_num": 1,
+    "part_numeral": "I",
+    "part_title": "The Core Engagement Arc I — Access, Change & Record to Report",
+    "sort_order": 1,
+    "shortname": "The First Assessment",
+    "subtitle": "Access Control / SoD",
+    "intro": "Confirm whether an SoD rule set built for an earlier organizational structure has been updated to cover a newly created function's actual authorization combinations, and test whether the resulting conflict created real exposure during the assessment period.",
+    "exec_table": [
+      {
+        "tool": "GRC Access Control",
+        "code": "GRAC_ARA",
+        "directions": "Run Access Risk Analysis at user level for the risk IDs the S-1's control language claims to cover, restricted to the function created since the ruleset was last updated. [Navigation: from the Fiori Launchpad, open the Access Risk Analysis tile (App Finder if not pinned) — or in NWBC, GRC → Access Management → Access Risk Analysis. Set Analysis Type = User Level, filter Organizational Unit to the new function, and execute.]",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "PFCG",
+        "directions": "Pull the role(s) assigned to the new function and confirm exactly which authorization objects each carries. [Navigation: type PFCG in the command field and press Enter, enter the role name, click Display, open the Authorizations tab, and expand the authorization tree.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Compare the combined authority held by any single role or user in the new function against the original SoD ruleset's coverage, to confirm whether that combination was ever defined as a risk at all.",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "SE16N",
+        "directions": "Independently pull the transaction population processed through the new function since its creation, to test whether the combined authority was ever actually exercised. [Navigation: type SE16N in the command field and press Enter, select the relevant transaction/document table, restrict to the function's date range and org unit, and execute.]",
+        "screenshot": null
+      }
+    ],
+    "evidence": "Access Risk Analysis export for the new function's roles, PFCG authorization detail, and the population test confirming whether the combined authority was exercised.",
+    "pitfall": "A control that was accurately described when it was designed can still be false today if the org chart moved and nobody updated the ruleset to match — always test the ruleset's coverage against the current organization, not the one it was built for."
+  },
+  {
+    "book_num": 2,
+    "part_numeral": "I",
+    "part_title": "The Core Engagement Arc I — Access, Change & Record to Report",
+    "sort_order": 2,
+    "shortname": "The Model Made the Change",
+    "subtitle": "ITGC Change Management",
+    "intro": "Confirm that a configuration change proposed by an AI coding assistant and approved through the standard CAB process received genuine human review, not a procedurally complete but substantively empty approval.",
+    "exec_table": [
+      {
+        "tool": "SAP GUI",
+        "code": "STMS",
+        "directions": "Pull the transport for the change in scope and its full CAB approval trail. [Navigation: type STMS in the command field and press Enter, open the import queue, locate the transport by its change ticket reference, and open the transport log and approval history.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the AI coding assistant's own generation log or commit history for the change, to identify exactly what the tool proposed versus what a human actually reviewed.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Measure the elapsed time between the change being presented for approval and the approval timestamp, and compare it against the complexity of the change (lines changed, objects touched, tables affected).",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Where the approval time is implausibly short given the change's complexity, interview the approver directly about what they actually reviewed, and document the gap between 'followed the CAB process' and 'genuinely reviewed the change.'",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The STMS transport log and CAB approval trail, the AI tool's generation log, and the elapsed-time analysis between presentation and approval.",
+    "pitfall": "A change that technically followed every step of the CAB process can still have received zero substantive human review — test the reviewer's actual engagement, not just the workflow's completion."
+  },
+  {
+    "book_num": 3,
+    "part_numeral": "I",
+    "part_title": "The Core Engagement Arc I — Access, Change & Record to Report",
+    "sort_order": 3,
+    "shortname": "The Journal Entry the Model Wrote",
+    "subtitle": "Record to Report",
+    "intro": "Confirm whether an RPA bot trained to draft recurring journal entries has begun generating entries outside its originally defined scope, based on patterns it inferred rather than rules it was explicitly given.",
+    "exec_table": [
+      {
+        "tool": "SAP GUI",
+        "code": "FB03",
+        "directions": "Pull the journal entry in question and its full posting detail, including the technical user ID used by the bot. [Navigation: type FB03 in the command field and press Enter, enter the document number, and display the document header and line items.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the bot's original configuration or training-scope documentation to confirm exactly which recurring entries it was authorized to draft.",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "SE16N",
+        "directions": "Query the change document / posting tables for entries posted under the bot's technical user ID over the test period, to identify any entry type outside the documented scope. [Navigation: type SE16N in the command field and press Enter, table CDHDR/CDPOS or BKPF filtered to the bot's user ID, restrict the date range, and execute.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "For any entry outside the documented scope, trace whether a human reviewed and approved it before posting, or whether it posted automatically on the same inferred-pattern logic that created it.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The out-of-scope journal entry's full detail, the bot's documented authorized scope, and the SE16N population of all entries posted under its technical user ID during the period.",
+    "pitfall": "An RPA bot operating within its originally documented scope is a configuration question; a bot that has begun inferring new entries on its own is a control design question — confirm which one you're looking at before concluding the control operated."
+  },
+  {
+    "book_num": 4,
+    "part_numeral": "I",
+    "part_title": "The Core Engagement Arc I — Access, Change & Record to Report",
+    "sort_order": 4,
+    "shortname": "The Framework That Disagreed With Itself",
+    "subtitle": "Multi-Framework Harmonization (SOX/SOC 2/ISO 27001)",
+    "intro": "Confirm what the underlying control actually does operationally, independent of any single framework's language, and determine whether the frameworks' differing requirements demand genuinely separate tests rather than one shared conclusion.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the control's current documentation as tested for each of the three frameworks (SOX, SOC 2, ISO 27001) and line up their stated objectives and evidence requirements side by side.",
+        "screenshot": null
+      },
+      {
+        "tool": "GRC Process Control",
+        "code": "Manage Controls",
+        "directions": "Confirm the control's actual configuration and current operating parameters in the system of record. [Navigation: from the Fiori Launchpad, open the Process Control – Manage Controls app, search by control ID, and open its current configuration and most recent test evidence.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Identify the specific point where the frameworks' requirements diverge — a threshold, a review frequency, an evidence retention period — and confirm which requirement the control's actual configuration currently satisfies.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document, for each framework, whether the control as currently configured passes, fails, or is untested against that framework's specific requirement, rather than reporting a single pass/fail conclusion across all three.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The control's configuration and evidence pulled from GRC Process Control, mapped individually against each of the three frameworks' specific requirements.",
+    "pitfall": "A control that satisfies one framework's language can fail a second framework's stricter requirement on the exact same evidence — never let a single pass/fail conclusion stand in for three separate, and possibly divergent, framework tests."
+  },
+  {
+    "book_num": 5,
+    "part_numeral": "I",
+    "part_title": "The Core Engagement Arc I — Access, Change & Record to Report",
+    "sort_order": 5,
+    "shortname": "The Carve-Out",
+    "subtitle": "M&A Divestiture / TSA Controls",
+    "intro": "Confirm that the standalone financial reporting required under a Transition Services Agreement is supported by controls that were actually tested on a standalone basis, not inherited untested from the parent's consolidated control environment.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the TSA and identify every standalone financial reporting obligation it creates for the divested product line.",
+        "screenshot": null
+      },
+      {
+        "tool": "GRC Process Control",
+        "code": "Manage Controls",
+        "directions": "For each obligation, confirm whether a corresponding control exists in the system of record scoped specifically to the divested entity's standalone data, rather than the parent's consolidated population. [Navigation: from the Fiori Launchpad, open Process Control – Manage Controls, filter by entity/org unit for the divested product line, and review each control's tested population scope.]",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "FBL3N",
+        "directions": "Pull a sample of transactions specific to the divested product line and independently confirm they were included in the control's tested population, not netted into a consolidated sample that could mask standalone-level exceptions. [Navigation: type FBL3N in the command field and press Enter, restrict company code/profit center to the divested line, set the period, and execute.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document any TSA reporting obligation with no corresponding standalone-tested control, and assess whether the parent's consolidated control can be relied upon at all for the standalone population it was never designed to isolate.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The TSA's standalone reporting obligations, mapped against each obligation's corresponding control and that control's actual tested population scope.",
+    "pitfall": "A control that has always operated effectively at the consolidated level provides no assurance over a standalone population it was never designed to isolate — confirm the tested population matches the TSA's actual reporting boundary."
+  },
+  {
+    "book_num": 6,
+    "part_numeral": "I",
+    "part_title": "The Core Engagement Arc I — Access, Change & Record to Report",
+    "sort_order": 6,
+    "shortname": "The Consent Nobody Renewed",
+    "subtitle": "Data Privacy (AI-era, cross-border)",
+    "intro": "Confirm whether customer data consent obtained under a prior privacy framework remains valid under a new AI-specific regulation, and whether the AI feature trained on that data continues to operate on a compliant legal basis.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the original consent record and the specific legal basis and scope it documented at the time it was obtained.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the new AI-specific regulation's requirements and identify the specific point where they diverge from the original consent's scope — for example, a requirement for AI-specific disclosure or a narrower permitted use.",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "SUIM",
+        "directions": "Trace which specific customer records were actually used to train the AI feature, to confirm the population in scope. [Navigation: type SUIM in the command field and press Enter, use the appropriate change-document or data-usage report for the training dataset's source tables, restricted to the relevant date range; cross-reference against the AI platform's own training-data lineage log if SAP tables alone don't capture it.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the gap between the original consent's scope and the new regulation's requirement, and confirm whether the AI feature has been paused, re-consented, or otherwise brought into compliance before continuing to operate on the affected population.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The original consent record, the new regulation's specific requirement, and the data lineage trace confirming which customer records were used to train the affected AI feature.",
+    "pitfall": "A consent that was valid when obtained does not stay valid indefinitely if the regulatory framework it was obtained under changes — confirm current validity against current law, not the law in effect when the consent was signed."
+  },
+  {
+    "book_num": 7,
+    "part_numeral": "II",
+    "part_title": "The Core Engagement Arc II — Revenue, Governance & Disclosure Crisis",
+    "sort_order": 7,
+    "shortname": "The Metric That Moved Revenue",
+    "subtitle": "Consumption-Based Revenue Recognition",
+    "intro": "Confirm that a change to how the product meters customer usage did not silently shift revenue recognition timing for an affected subscription cohort, and that Finance identified and assessed the change before it materially affected reported revenue.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Identify the specific metering logic change and its effective date, and the engineering or product change record documenting it.",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "FBL3N",
+        "directions": "Pull revenue recognition postings for the affected subscription cohort for the periods immediately before and after the metering change. [Navigation: type FBL3N in the command field and press Enter, restrict to the revenue accounts and customer/cohort segment in scope, set the before/after date ranges, and execute.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently recalculate revenue recognition timing for a sample of affected contracts using the pre-change metering logic, and compare against what was actually recognized post-change, to isolate the specific timing shift.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Trace whether the metering change went through the standard change management and revenue-recognition-impact review process before deployment, or whether Finance only became aware after Sales noticed the shift.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The before/after revenue recognition postings for the affected cohort, the independent recalculation isolating the timing shift, and the change management record (or its absence) for the metering logic change.",
+    "pitfall": "A metering or usage-calculation change can look purely technical to the team that ships it while carrying a real revenue recognition impact — any change to how usage is measured needs a revenue-recognition review gate, not just a standard engineering change process."
+  },
+  {
+    "book_num": 8,
+    "part_numeral": "II",
+    "part_title": "The Core Engagement Arc II — Revenue, Governance & Disclosure Crisis",
+    "sort_order": 8,
+    "shortname": "The Clawback Question",
+    "subtitle": "Executive Compensation Clawback (Dodd-Frank 10D-1)",
+    "intro": "Confirm whether a restatement, even a small one, triggers the clawback policy's actual language as written, by testing the policy's trigger criteria against this specific scenario for the first time.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the clawback policy's exact trigger language and identify every specific condition it requires to be met.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the restatement's actual financial impact, including the specific incentive-based compensation metrics it affects and by how much.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently test the restatement's facts against each condition in the policy's trigger language, line by line, rather than relying on a general sense of whether the restatement 'feels' clawback-worthy.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the specific conclusion for each trigger condition (met, not met, or ambiguous), and flag any condition where the policy's language itself is unclear when applied to a real, specific scenario for the first time.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The clawback policy's trigger language, the restatement's financial impact detail, and the line-by-line test of the restatement's facts against each trigger condition.",
+    "pitfall": "A clawback policy that has never been tested against a real scenario can contain trigger language that seems clear in the abstract and becomes genuinely ambiguous the first time it meets actual facts — document the ambiguity explicitly rather than resolving it silently in either direction."
+  },
+  {
+    "book_num": 9,
+    "part_numeral": "II",
+    "part_title": "The Core Engagement Arc II — Revenue, Governance & Disclosure Crisis",
+    "sort_order": 9,
+    "shortname": "The Activist's Letter",
+    "subtitle": "Board Crisis / Proxy Pressure",
+    "intro": "Confirm the factual accuracy of a control weakness cited in a public activist investor letter, and assess, on an accelerated timeline, whether the weakness meets the threshold for disclosure independent of the pressure created by its public airing.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the activist letter's specific factual claim about the control weakness and identify exactly what it alleges.",
+        "screenshot": null
+      },
+      {
+        "tool": "GRC Process Control",
+        "code": "Risk Workbench",
+        "directions": "Independently pull the control's actual current status and test history to confirm or refute the specific factual claim. [Navigation: from the Fiori Launchpad, open Process Control – Manage Controls or Risk Workbench, search by the control/risk in question, and review its current status and most recent test results.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Assess the weakness (if confirmed) against the organization's standard materiality framework, using the same criteria that would apply had the weakness surfaced through normal testing rather than a public letter.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the assessment and its timeline explicitly, distinguishing between the accelerated pace imposed by the public letter and the substance of the materiality conclusion, so the conclusion can be defended as independent of the pressure that prompted it.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The activist letter's specific claim, the control's actual current status and test history, and the materiality assessment applying the standard framework under the accelerated timeline.",
+    "pitfall": "A materiality conclusion reached under public pressure and on an accelerated timeline is scrutinized just as closely, if not more, than one reached in the normal cycle — apply the same framework and document that you did, rather than letting the deadline visibly shape the conclusion."
+  },
+  {
+    "book_num": 10,
+    "part_numeral": "II",
+    "part_title": "The Core Engagement Arc II — Revenue, Governance & Disclosure Crisis",
+    "sort_order": 10,
+    "shortname": "The Signature Page, Alone",
+    "subtitle": "Executive & Board",
+    "intro": "Confirm that a board briefing on the year's control posture, delivered solo without a senior consultant present, accurately and completely represents the testing performed, with no material item softened or omitted under the pressure of presenting alone.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the full population of findings, open items, and remediations for the reporting period, independent of what's included in the draft board summary.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Compare the draft board summary against the full population line by line, confirming every material item is represented, not just the items with the cleanest resolution.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Have a peer — not necessarily more senior — independently review the summary against the underlying population, as a check specifically designed to compensate for the absence of a senior reviewer.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document any item that was condensed, reframed, or omitted in the summary relative to the underlying population, and confirm the reason for each omission is defensible on its own terms, not simply that it made the briefing cleaner.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The full underlying findings population, the draft board summary, and the peer-review comparison confirming completeness of representation.",
+    "pitfall": "Delivering a board briefing without a senior consultant in the room removes a layer of review that normally catches quiet omissions before they reach the board — build an explicit peer-review step to replace that layer rather than relying on personal discipline alone."
+  },
+  {
+    "book_num": 11,
+    "part_numeral": "II",
+    "part_title": "The Core Engagement Arc II — Revenue, Governance & Disclosure Crisis",
+    "sort_order": 11,
+    "shortname": "The Second Restatement",
+    "subtitle": "SEC Disclosure / Restatement",
+    "intro": "Confirm that the disclosure controls narrative supporting a second restatement within eighteen months of IPO can withstand direct, skeptical scrutiny — not just internal review — by independently testing whether the stated remediation from the first restatement actually held.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the first restatement's documented remediation and its stated completion date and scope.",
+        "screenshot": null
+      },
+      {
+        "tool": "GRC Process Control",
+        "code": "Manage Controls",
+        "directions": "Independently confirm the remediated control's actual configuration and test history since the stated completion date, rather than relying on the original remediation memo's description. [Navigation: from the Fiori Launchpad, open Process Control – Manage Controls, search by control ID, and review the full test history from the remediation date forward.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Trace the second restatement's root cause and confirm whether it is genuinely a new, unrelated issue or whether it traces back to the first remediation not fully holding.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the disclosure controls narrative with specific, checkable evidence for each claim, anticipating that this narrative will be tested by the SEC with less deference than an internal review would apply.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The first restatement's remediation record, the independent post-remediation test history, and the root-cause trace for the second restatement.",
+    "pitfall": "A second restatement within eighteen months invites direct scrutiny of whether the first remediation was real — build the disclosure narrative on independently verified evidence, not on the original remediation memo's own account of itself."
+  },
+  {
+    "book_num": 12,
+    "part_numeral": "II",
+    "part_title": "The Core Engagement Arc II — Revenue, Governance & Disclosure Crisis",
+    "sort_order": 12,
+    "shortname": "The Inquiry With No Senior",
+    "subtitle": "Disclosure Controls (SOX 302) / Live SEC Inquiry",
+    "intro": "Confirm that every response drafted during a live, multi-week SEC inquiry is grounded in specific, checkable evidence, sustained by the Lead alone over an extended period with no senior consultant to review each response before it goes out.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "For each SEC inquiry question received, identify the specific underlying evidence required to answer it factually, before drafting any response language.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently pull that evidence directly from the system of record for each question, rather than relying on a prior period's documentation that may not reflect the current facts.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Build a standing evidence log mapping every drafted response to its specific supporting evidence, structured so it can substitute for a senior reviewer's normal cross-check function.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Before each response is sent, run it against the evidence log specifically checking for any claim not directly supported by the underlying evidence, treating this self-check as the required review step in the absence of a senior consultant.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The standing evidence log mapping every SEC inquiry response to its specific underlying evidence, maintained throughout the six-week inquiry.",
+    "pitfall": "A multi-week inquiry sustained by a single Lead with no senior reviewer removes the normal safety net that catches an unsupported claim before it reaches a regulator — the evidence log is not paperwork here, it is the control that replaces the missing second reviewer."
+  },
+  {
+    "book_num": 13,
+    "part_numeral": "III",
+    "part_title": "The Scope-Area Set I — Access, Identity & GRC Platform (AI-Era)",
+    "sort_order": 13,
+    "shortname": "The Launchpad AI Built",
+    "subtitle": "SAP Fiori Security (AI-assisted admin)",
+    "intro": "Confirm that catalog and tile assignments auto-generated by an AI-assisted Fiori administration tool from a natural-language request match the requester's actual, intended scope, and did not over-grant due to ambiguity in the original request.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the original natural-language request submitted to the AI administration tool and the catalog/tile assignments it actually generated.",
+        "screenshot": null
+      },
+      {
+        "tool": "Fiori",
+        "code": "LPD_CUST",
+        "directions": "Trace each generated tile assignment to its underlying OData service and authorization object. [Navigation: type LPD_CUST in the command field and press Enter (or use the Launchpad Designer Fiori app), locate each generated tile, and open its target mapping to identify the bound OData service and authorization requirement.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Compare the actual authorization scope granted against a plain-language restatement of what the original request intended, identifying any tile or catalog assignment broader than the request's apparent intent.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the specific ambiguity in the original request that allowed the over-grant, and confirm whether the AI tool's design includes a confirmation step for ambiguous requests, or whether it defaults to the broadest plausible interpretation.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The original natural-language request, the generated catalog/tile assignments, and each assignment's traced OData service and authorization object.",
+    "pitfall": "An AI administration tool that generates access from natural language will resolve ambiguity somehow — confirm whether it defaults toward the narrowest or broadest plausible interpretation, because that default is itself a control design choice that needs testing."
+  },
+  {
+    "book_num": 14,
+    "part_numeral": "III",
+    "part_title": "The Scope-Area Set I — Access, Identity & GRC Platform (AI-Era)",
+    "sort_order": 14,
+    "shortname": "The Rule the Model Suggested",
+    "subtitle": "GRC Process Control (CCM, AI-tuned)",
+    "intro": "Confirm that an AI-recommended adjustment to a Continuous Controls Monitoring rule threshold, adopted to reduce alert noise, has not widened the rule's tolerance past the point where it can still catch what the control was originally designed to detect.",
+    "exec_table": [
+      {
+        "tool": "GRC Process Control",
+        "code": "Manage CCM Rules",
+        "directions": "Pull the CCM rule's original threshold configuration and the current, AI-adjusted configuration side by side. [Navigation: from the Fiori Launchpad, open Process Control – Manage Continuous Monitoring Rules, search by rule ID, and open the configuration history/change log.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the AI tool's own recommendation record or rationale for the threshold change, including the noise-reduction metric it was optimizing for.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently test the adjusted threshold against a sample of historical exceptions the rule was originally designed to catch, confirming whether those same exceptions would still be flagged under the new threshold.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Where the adjusted threshold would no longer catch a historical exception it was designed to catch, document this as a control design regression introduced by the noise-reduction change, regardless of how much noise reduction it achieved.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The CCM rule's before/after threshold configuration, the AI tool's rationale, and the historical-exception retest results under the new threshold.",
+    "pitfall": "Reducing alert noise is a legitimate goal, but a threshold change optimized purely for noise reduction can silently widen past the boundary the control was actually designed to enforce — always retest against known historical exceptions before accepting a noise-reduction change."
+  },
+  {
+    "book_num": 15,
+    "part_numeral": "III",
+    "part_title": "The Scope-Area Set I — Access, Identity & GRC Platform (AI-Era)",
+    "sort_order": 15,
+    "shortname": "The Risk AI Didn't Flag",
+    "subtitle": "GRC Risk Management (AI risk)",
+    "intro": "Confirm whether the enterprise risk register has been updated to include AI model risk as a distinct category, a full year after the company's core product became AI-assisted, and assess the exposure created by the gap.",
+    "exec_table": [
+      {
+        "tool": "GRC Risk Management",
+        "code": "Risk Workbench",
+        "directions": "Pull the current enterprise risk register and confirm whether any entry explicitly addresses AI model risk. [Navigation: from the Fiori Launchpad, open the Risk Workbench app, review the full risk category list, and search specifically for AI/model-related risk entries.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently inventory the AI-assisted features and models currently embedded in the company's core product and internal operations, regardless of what the risk register currently reflects.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "For each AI feature/model identified, assess whether its specific risk profile (model drift, training data exposure, automated-decision error) is captured by any existing risk entry, even indirectly, or is genuinely unaddressed.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the gap between the AI footprint actually in production and the risk register's current coverage, and assess how long the gap has existed relative to when each AI feature went live.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The current risk register's AI-related coverage (or its absence), the independent inventory of AI features/models in production, and the gap analysis between the two.",
+    "pitfall": "A risk register with zero exceptions or violations tied to AI can still be dangerously incomplete if AI risk was simply never added as a category — absence of flagged AI risk is not the same as absence of AI risk."
+  },
+  {
+    "book_num": 16,
+    "part_numeral": "III",
+    "part_title": "The Scope-Area Set I — Access, Identity & GRC Platform (AI-Era)",
+    "sort_order": 16,
+    "shortname": "The Firefighter the Bot Requested",
+    "subtitle": "Emergency Access Management (EAM, automated requests)",
+    "intro": "Confirm that the firefighter access approval chain correctly handles a request submitted by an automated incident-response bot on a human's behalf, and that the access granted was reviewed with the same rigor as a human-submitted request.",
+    "exec_table": [
+      {
+        "tool": "GRC Access Control",
+        "code": "GRAC_SPM",
+        "directions": "Pull the firefighter access assignment and session log for the request in scope, including the requester field as recorded in the system. [Navigation: from the Fiori Launchpad, open Superuser Privilege Management (or in NWBC, GRC → Access Management → Firefighter Administration), search by the session/assignment ID, and open its full detail.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Confirm exactly how the request was submitted — specifically whether it shows the bot, the human on whose behalf it acted, or a shared/generic identity as the requester of record.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Trace the approval decision and confirm whether the approver's review process was designed to evaluate a bot-originated request, or whether the approval chain simply processed it identically to a routine human request without additional verification.",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "SM20",
+        "directions": "Cross-reference the firefighter session log against the security audit log to confirm what was actually executed during the session, independent of what was requested. [Navigation: type SM20 in the command field and press Enter, restrict the user ID filter to the Firefighter ID(s) in scope and the date range to the session, and execute.]",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The GRAC_SPM firefighter assignment and session log, the requester-of-record detail, and the SM20 cross-reference of actual transactions executed during the session.",
+    "pitfall": "An approval chain built and tested for human requesters can process a bot-originated request without ever recognizing it as a different category of risk — confirm the approval workflow was actually designed to evaluate a non-human requester, not just that it technically completed."
+  },
+  {
+    "book_num": 17,
+    "part_numeral": "III",
+    "part_title": "The Scope-Area Set I — Access, Identity & GRC Platform (AI-Era)",
+    "sort_order": 17,
+    "shortname": "The Leaver Who Trained the Model",
+    "subtitle": "Joiner-Mover-Leaver (data/model access)",
+    "intro": "Confirm that removing a departed engineer's system access, while correctly executed, adequately addresses the residual exposure created by an AI model that continues to reflect patterns learned from data the departed engineer touched.",
+    "exec_table": [
+      {
+        "tool": "SAP GUI",
+        "code": "SU01",
+        "directions": "Confirm the departed engineer's system access was fully deactivated on schedule, per the standard termination process. [Navigation: type SU01 in the command field and press Enter, enter the departed engineer's user ID, open the Logon Data tab, and confirm the account is locked/invalidated as of the termination date.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently identify which specific datasets or model training runs the engineer had access to or directly worked on prior to departure.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Confirm whether any AI model trained using that data or those runs is still in active production use, and if so, whether the model's current behavior has been assessed for any pattern specifically attributable to the departed engineer's work.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document that standard access termination and model-level residual risk assessment are two separate control questions, and confirm both were addressed, not just the first.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The SU01 termination confirmation and an independent assessment of the AI model's residual exposure to data or patterns the departed engineer contributed.",
+    "pitfall": "Access termination closes the account; it does not close the model — a departed employee's influence on a trained model's behavior can persist long after their SAP access is fully removed, and that residual exposure needs its own separate test."
+  },
+  {
+    "book_num": 18,
+    "part_numeral": "IV",
+    "part_title": "The Scope-Area Set II — Operations, Code, Data & Licensing (AI-Era)",
+    "sort_order": 18,
+    "shortname": "The Backup the Bot Verified",
+    "subtitle": "Computer Operations (AI-monitored)",
+    "intro": "Confirm that an AI monitoring tool reporting backups as successful is actually checking the correct field or condition, rather than matching a superficially similar log pattern that does not reflect true backup success.",
+    "exec_table": [
+      {
+        "tool": "SAP GUI",
+        "code": "DB13 / DB12",
+        "directions": "Pull the actual backup job history and status directly from the database administration tool, independent of the AI monitoring tool's own reported status. [Navigation: type DB13 in the command field and press Enter, review the backup job calendar and completion status for the test period; use DB12 for the backup log/history view.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the AI monitoring tool's own configuration to confirm exactly which log field or pattern it is matching against to determine 'success.'",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Compare the AI tool's reported status against the actual DB13/DB12 backup status for the same period, identifying any discrepancy between 'reported successful' and 'actually successful.'",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Where a discrepancy exists, independently confirm data currency by validating an actual restored environment or sample recovery, since a monitoring tool checking the wrong field can misreport for an extended period before anyone notices.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The DB13/DB12 backup job history, the AI monitoring tool's configuration showing what it actually checks, and the discrepancy analysis between reported and actual backup status.",
+    "pitfall": "A monitoring tool that has reported 'success' consistently for weeks is not evidence the backups actually succeeded — confirm what the tool is actually checking against the system of record's own backup history, not just that the tool's dashboard is green."
+  },
+  {
+    "book_num": 19,
+    "part_numeral": "IV",
+    "part_title": "The Scope-Area Set II — Operations, Code, Data & Licensing (AI-Era)",
+    "sort_order": 19,
+    "shortname": "The Interface Two Models Fed",
+    "subtitle": "Interface / Data Conversion (AI pipelines)",
+    "intro": "Confirm that two AI-assisted data pipelines feeding the same downstream table apply consistent transformation logic, since both pipelines independently reconciling to their own source does not confirm they agree with each other.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Identify both AI-assisted pipelines feeding the downstream table and pull each pipeline's documented transformation logic.",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "SXMB_MONI",
+        "directions": "Trace a sample of records from each pipeline at the field level from source through transformation to the downstream table. [Navigation: type SXMB_MONI in the command field and press Enter, filter by the interface/pipeline ID and date range, and open individual messages to trace field-level values through each processing step.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "For records where both pipelines contribute to the same downstream field, compare the two pipelines' transformation results directly against each other, not just each against its own source.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document any field where the two pipelines' transformation logic silently conflicts despite each individually reconciling to its own source, and trace how long the conflicting logic has been feeding the downstream table.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The field-level trace of sample records through both pipelines, with the direct pipeline-to-pipeline comparison for shared downstream fields.",
+    "pitfall": "Each pipeline reconciling cleanly to its own source is not the same as the two pipelines agreeing with each other on a shared downstream field — test them against each other directly, not just each in isolation."
+  },
+  {
+    "book_num": 20,
+    "part_numeral": "IV",
+    "part_title": "The Scope-Area Set II — Operations, Code, Data & Licensing (AI-Era)",
+    "sort_order": 20,
+    "shortname": "The Code the Model Wrote",
+    "subtitle": "Custom Code / AI-Generated Code Security",
+    "intro": "Confirm that an authorization check within a module substantially generated by an AI coding assistant actually enforces the restriction it appears to enforce, rather than looking syntactically correct while failing to restrict access in practice.",
+    "exec_table": [
+      {
+        "tool": "SAP GUI",
+        "code": "SE38 / SE80",
+        "directions": "Pull the custom module's source code and identify the specific authorization check(s) the AI assistant generated. [Navigation: type SE38 in the command field and press Enter (or SE80 for full Object Navigator), open the program, and locate the AUTHORITY-CHECK statement(s) or custom authorization logic.]",
+        "screenshot": null
+      },
+      {
+        "tool": "SAP GUI",
+        "code": "SCI",
+        "directions": "Run a Code Inspector scan specifically targeting authorization-check logic against the module. [Navigation: type SCI in the command field and press Enter (or reach it from SE38/SE80 → Code Inspector), create an inspection variant scoped to the module, select the authorization/security check set, and execute.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently test the authorization check functionally, attempting the restricted action with a test user who should be denied, to confirm the check actually blocks the action rather than merely appearing to check for it.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Where the check is confirmed present in the code but functionally ineffective, document the specific logic error and assess whether other AI-generated modules share the same pattern.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The SE38/SE80 source code excerpt showing the authorization check, the SCI scan results, and the functional test confirming (or refuting) that the check actually blocks the restricted action.",
+    "pitfall": "AI-generated code can produce an authorization check that is syntactically correct and reads as legitimate on review while functionally failing to restrict anything — a code read-through is not a substitute for functionally testing the check with a denied test user."
+  },
+  {
+    "book_num": 21,
+    "part_numeral": "IV",
+    "part_title": "The Scope-Area Set II — Operations, Code, Data & Licensing (AI-Era)",
+    "sort_order": 21,
+    "shortname": "The Retention the Model Ignored",
+    "subtitle": "Data Privacy (AI training data retention)",
+    "intro": "Confirm whether data that should have been purged under the retention policy persists indefinitely inside a trained AI model's weights, an exposure category the original retention policy never anticipated.",
+    "exec_table": [
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Pull the retention policy's purge schedule and confirm the specific dataset in question was correctly purged from its original source tables/storage on schedule.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently identify whether that dataset was used to train any AI model still in active use, regardless of whether the source data itself was properly purged afterward.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Consult with the AI/data science team to assess, to the extent technically determinable, whether the model's learned parameters retain information traceable back to the purged dataset, even though the raw data no longer exists in its original form.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the retention policy's current silence on model-embedded data as a policy gap, distinct from and in addition to the fact that the original source data was properly purged, and assess whether model retraining or retirement is required to close the exposure.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The retention policy's purge confirmation for the original source data, and the independent assessment of whether the trained model retains traceable information from the purged dataset.",
+    "pitfall": "A retention policy that only tracks source data can report full compliance while the same data's influence persists indefinitely inside a trained model's weights — a purge confirmation for the source table is not a purge confirmation for everything the data was ever used to train."
+  },
+  {
+    "book_num": 22,
+    "part_numeral": "IV",
+    "part_title": "The Scope-Area Set II — Operations, Code, Data & Licensing (AI-Era)",
+    "sort_order": 22,
+    "shortname": "The License the IPO Exposed",
+    "subtitle": "SAP Licensing Exposure (post-IPO scrutiny)",
+    "intro": "Confirm the extent of indirect access licensing exposure surfaced by post-IPO investor scrutiny, independent of what the company's IPO underwriters previously assessed, and evaluate the exposure against actual current license terms.",
+    "exec_table": [
+      {
+        "tool": "SAP GUI",
+        "code": "USMM",
+        "directions": "Pull the current license measurement output and identify the named-user and engine-based counts as currently reported. [Navigation: type USMM in the command field and press Enter, run the measurement, and review the resulting usage report by license metric.]",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Independently trace indirect or digital access created through APIs, integrations, or third-party applications that create transaction volume in SAP without a corresponding named user, since USMM's standard output does not capture this category.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Compare the actual indirect-access transaction volume traced against the specific indirect-access terms in the current license agreement, rather than the general named-user counts USMM reports.",
+        "screenshot": null
+      },
+      {
+        "tool": "—",
+        "code": "—",
+        "directions": "Document the gap between what USMM reports and what the license agreement's indirect-access terms actually require, quantify the exposure, and confirm whether this specific exposure was ever assessed during IPO due diligence or is genuinely new to this post-IPO review.",
+        "screenshot": null
+      }
+    ],
+    "evidence": "The USMM measurement output, the independent indirect-access transaction volume trace, and the gap analysis against the license agreement's indirect-access terms.",
+    "pitfall": "Standard license measurement counts named users; it does not on its own capture indirect or API-driven access — a clean USMM output is not proof of full licensing compliance when significant transaction volume flows through integrations with no named user behind it."
+  }
+]
